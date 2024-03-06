@@ -1,13 +1,16 @@
+import os
+
 def load_courses():
+    current_directory = os.path.dirname(os.path.abspath(__file__))
     courses = {
         "Программирование на Python": {
-            "файл": "c:/Users/fanco/OneDrive/Рабочий стол/python_course.txt"
+            "файл": os.path.join(current_directory, "python_course.txt")
         },
         "Веб-разработка": {
-            "файл": "c:/Users/fanco/OneDrive/Рабочий стол/web_course.txt"
+            "файл": os.path.join(current_directory, "web_course.txt")
         },
         "Наука о данных": {
-            "файл": "c:/Users/fanco/OneDrive/Рабочий стол/data_science_course.txt"
+            "файл": os.path.join(current_directory, "data_science_course.txt")
         }
     }
     return courses
@@ -42,7 +45,12 @@ def respond(user_input, courses):
         return ("Доступные курсы:\n" + list_courses(courses) + "\n"
                 "Введите название курса для получения подробной информации.")
     elif user_input in courses:
-        return get_course_info(user_input, courses)
+        course_info = get_course_info(user_input, courses)
+        print("Бот:", course_info)
+        print("Доступные команды:\n"
+              "- 'курсы' - для просмотра доступных курсов и выбора для изучения\n"
+              "- 'выход' - для завершения работы с ботом")
+        return None
     else:
         return "Извините, я не понимаю ваш запрос."
 
@@ -58,6 +66,7 @@ while True:
               "- 'выход' - для завершения работы с ботом")
         continue
     response = respond(user_input, courses)
-    print("Бот:", response)
+    if response is not None:
+        print("Бот:", response)
     if response == "До свидания!":
         break
